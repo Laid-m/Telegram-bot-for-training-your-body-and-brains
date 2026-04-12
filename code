@@ -1,0 +1,54 @@
+from aiogram import Bot, Dispatcher, executor, types
+from random import choice
+
+bot = Bot(token="TOKEN")
+dp = Dispatcher(bot)
+
+tasks = [
+    "10 отжиманий",
+    "10 приседаний",
+    "10 скручиваний на пресс",
+    "читать книгу",
+    "выучить что-то новое"
+]
+
+tasks2 = [
+    "20 отжиманий",
+    "20 приседаний",
+    "20 скручиваний на пресс",
+    "начни изучать фондовый рынок"
+]
+
+done_count = 0
+
+
+@dp.message_handler(commands=['start'])
+async def start(message: types.Message):
+    await message.answer("привет ну что готов стать лучше  напиши /task чтобы начать первое задание")
+
+
+@dp.message_handler(commands=['task'])
+async def task(message: types.Message):
+    await message.answer(choice(tasks))
+
+
+@dp.message_handler(commands=['task2'])
+async def task2(message: types.Message):
+    await message.answer("ну что продолжаем  готов ко 2 заданию?")
+    await message.answer(choice(tasks2))
+
+
+@dp.message_handler(commands=['done'])
+async def done(message: types.Message):
+    global done_count
+    done_count += 1
+    await message.answer(f"йоо ты красавчик  завершил {done_count} заданий")
+
+
+@dp.message_handler(commands=['stats'])
+async def stats(message: types.Message):
+    await message.answer(f"твоя статистика: {done_count} заданий")
+
+
+if __name__ == '__main__':
+    executor.start_polling(dp, skip_updates=True)
