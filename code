@@ -1,9 +1,23 @@
+
+
 from aiogram import Bot, Dispatcher, executor, types
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from random import choice
 
 bot = Bot(token="TOKEN")
 dp = Dispatcher(bot)
 
+# меню
+menu = ReplyKeyboardMarkup(resize_keyboard=True)
+
+but1 = KeyboardButton("Задание")
+but2 = KeyboardButton("Готово")
+but3 = KeyboardButton("Статистика")
+but4 = KeyboardButton("Усложнение")
+
+menu.add(but1, but2).add(but3, but4)
+
+# данные
 tasks = [
     "10 отжиманий",
     "10 приседаний",
@@ -16,7 +30,7 @@ tasks2 = [
     "20 отжиманий",
     "20 приседаний",
     "20 скручиваний на пресс",
-    "начни изучать фондовый рынок"
+    "особое задание от Тайлера Дердена: начни изучать фондовый рынок"
 ]
 
 done_count = 0
@@ -24,7 +38,28 @@ done_count = 0
 
 @dp.message_handler(commands=['start'])
 async def start(message: types.Message):
-    await message.answer("привет ну что готов стать лучше  напиши /task чтобы начать первое задание")
+    await message.answer(
+        f"привет {message.from_user.first_name}  готов стать лучше?",
+        reply_markup=menu
+    )
+
+
+@dp.message_handler()
+async def menus(message: types.Message):
+    global done_count
+
+    if message.text == "Задание":
+        await message.answer(choice(tasks))
+
+    elif message.text == "Готово":
+        done_count += 1
+        await message.answer(f"красава  выполнено: {done_count}")
+
+    elif message.text == "Статистика":
+        await message.answer(f"твоя статистика: {done_count} заданий")
+
+    elif message.text == "Усложнение":
+        await message.answer(choice(tasks2))
 
 
 @dp.message_handler(commands=['task'])
@@ -34,7 +69,6 @@ async def task(message: types.Message):
 
 @dp.message_handler(commands=['task2'])
 async def task2(message: types.Message):
-    await message.answer("ну что продолжаем  готов ко 2 заданию?")
     await message.answer(choice(tasks2))
 
 
