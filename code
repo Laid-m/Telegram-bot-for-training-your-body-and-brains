@@ -14,7 +14,7 @@ but1 = KeyboardButton("Задание")
 but2 = KeyboardButton("Готово")
 but3 = KeyboardButton("Статистика")
 but4 = KeyboardButton("Усложнение")
-
+but5 = KeyboardButton("Уровень")
 menu.add(but1, but2).add(but3, but4)
 
 # данные
@@ -34,7 +34,8 @@ tasks2 = [
 ]
 
 done_count = 0
-
+xp = 0
+lvl = 0
 
 @dp.message_handler(commands=['start'])
 async def start(message: types.Message):
@@ -53,14 +54,20 @@ async def menus(message: types.Message):
 
     elif message.text == "Готово":
         done_count += 1
-        await message.answer(f"красава  выполнено: {done_count}")
+        xp += 10
+        await message.answer(f"красава  выполнено: {done_count} а также ты поднял 10 {xp} штоп поднять lvl нужно 50 xp")
 
     elif message.text == "Статистика":
         await message.answer(f"твоя статистика: {done_count} заданий")
 
     elif message.text == "Усложнение":
         await message.answer(choice(tasks2))
-
+    
+    elif message.text == "Уровень":
+        await message.answer("у тебя достаточно xp")
+    elif xp == "50":
+    lvl += 1
+    await message.answer("круто ты поднял первый уровень")
 
 @dp.message_handler(commands=['task'])
 async def task(message: types.Message):
