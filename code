@@ -15,7 +15,7 @@ but2 = KeyboardButton("Готово")
 but3 = KeyboardButton("Статистика")
 but4 = KeyboardButton("Усложнение")
 but5 = KeyboardButton("Уровень")
-menu.add(but1, but2).add(but3, but4)
+menu.add(but1, but2).add(but3, but4).add(but5)
 
 # данные
 tasks = [
